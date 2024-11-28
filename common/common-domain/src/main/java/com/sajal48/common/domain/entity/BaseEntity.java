@@ -1,4 +1,4 @@
-package com.sajal48.domain.entity;
+package com.sajal48.common.domain.entity;
 
 import java.util.Objects;
 

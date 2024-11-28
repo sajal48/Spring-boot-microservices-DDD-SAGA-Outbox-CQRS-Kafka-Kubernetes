@@ -1,4 +1,4 @@
-package com.sajal48.domain.entity;
+package com.sajal48.common.domain.entity;
 
 public abstract class AggregateRoot<ID> extends BaseEntity<ID>{
 }
