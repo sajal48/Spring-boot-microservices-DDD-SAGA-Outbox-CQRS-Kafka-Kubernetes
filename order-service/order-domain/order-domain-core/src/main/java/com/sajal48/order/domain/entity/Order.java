@@ -6,10 +6,12 @@ import com.sajal48.common.domain.valueobject.Money;
 import com.sajal48.common.domain.valueobject.OrderId;
 import com.sajal48.common.domain.valueobject.OrderStatus;
 import com.sajal48.common.domain.valueobject.RestaurantId;
+import com.sajal48.order.domain.exception.OrderDomainException;
 import com.sajal48.order.domain.valueobject.OrderItemId;
 import com.sajal48.order.domain.valueobject.StreetAddress;
 import com.sajal48.order.domain.valueobject.TrackingId;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,10 +35,74 @@ public class Order extends AggregateRoot<OrderId> {
     public void validateOrder() {
         validateInitialOrder();
         validateTotalPrice();
-        validateItemPrice();
+        validateItemsPrice();
+    }
+
+    public void pay(){
+        if(orderStatus != OrderStatus.PENDING){
+            throw new OrderDomainException("Order is not in correct state for pay operation!");
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+    public void approve(){
+        if(orderStatus != OrderStatus.PAID){
+            throw new OrderDomainException("Order is not in correct state for approve operation!");
+        }
+        orderStatus = OrderStatus.APPROVED;
+    }
+    public void initCancel(List<String> failureMessages){
+        if(orderStatus != OrderStatus.PAID){
+            throw new OrderDomainException("Order is not in correct state for initCancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+
+    public void cancel(List<String> failureMessages){
+        if(!(orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING)){
+            throw new OrderDomainException("Order is not in correct state for cancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessages(failureMessages);
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if(this.failureMessages != null && failureMessages !=null){
+            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+        }
+        if(this.failureMessages == null){
+            this.failureMessages = failureMessages;
+        }
+
+    }
+
+    private void validateItemsPrice() {
+        Money orderItemsTotal = items.stream().map( orderItem -> {
+            validateItemPrice(orderItem);
+            return orderItem.getSubTotal();
+        }).reduce(Money.ZERO,Money::add);
+        if(!price.equals(orderItemsTotal)){
+            throw new OrderDomainException("Total price "+ price.getAmount() +" does not match price "+ orderItemsTotal.getAmount()+ "!");
+        }
+    }
+
+    private void validateItemPrice(OrderItem orderItem) {
+        if(!orderItem.isPriceValid()){
+            throw new OrderDomainException("OrderItem price " + orderItem.getPrice().getAmount() + " is not valid for product " + orderItem.getProduct().getId().getValue()+ "!");
+        }
+    }
+
+    private void validateTotalPrice() {
+        if(price == null || !price.isGreaterThanZero()){
+            throw new OrderDomainException("Total price must be greater than zero!");
+        }
     }
 
     private void validateInitialOrder() {
+        if(orderStatus != null || getId() != null) {
+            throw new OrderDomainException("Order is not in correct state for initialization!");
+        }
     }
 
     private void initializeOrderItems() {
