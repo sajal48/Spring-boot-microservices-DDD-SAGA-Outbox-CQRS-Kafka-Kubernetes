@@ -9,6 +9,14 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
 	private final List<Product> products;
 	private boolean active;
 
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
 	private Restaurant(Builder builder) {
 		super.setId(builder.restaurantId);;
 		products = builder.products;
