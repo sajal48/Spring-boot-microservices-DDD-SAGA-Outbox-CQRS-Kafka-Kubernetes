@@ -7,6 +7,7 @@ import com.sajal48.common.domain.valueobject.RestaurantId;
 import com.sajal48.order.application.dto.create.CreateOrderCommand;
 import com.sajal48.order.application.dto.create.CreateOrderResponse;
 import com.sajal48.order.application.dto.create.OrderAddress;
+import com.sajal48.order.application.dto.track.TrackOrderResponse;
 import com.sajal48.order.domain.entity.Order;
 import com.sajal48.order.domain.entity.OrderItem;
 import com.sajal48.order.domain.entity.Product;
@@ -36,6 +37,13 @@ public class OrderDataMapper {
                 .deliveryAddress(orderAddressToStreetAddress(createOrderCommand.getAddress()))
                 .price(new Money(createOrderCommand.getPrice()))
                 .items(orderItemsToOrderItemEntities(createOrderCommand.getItems()))
+                .build();
+    }
+    public TrackOrderResponse orderToTrackOrderResponse(Order order) {
+        return TrackOrderResponse.builder()
+                .orderTrackingId(order.getTrackingId().getValue())
+                .orderStatus(order.getOrderStatus())
+                .failureMessages(order.getFailureMessages())
                 .build();
     }
 

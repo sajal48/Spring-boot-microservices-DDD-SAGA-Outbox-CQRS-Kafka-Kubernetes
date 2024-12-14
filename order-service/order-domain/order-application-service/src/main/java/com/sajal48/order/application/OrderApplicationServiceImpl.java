@@ -1,4 +1,4 @@
-package com.sajal48.order.application.ports;
+package com.sajal48.order.application;
 
 import com.sajal48.order.application.dto.create.CreateOrderCommand;
 import com.sajal48.order.application.dto.create.CreateOrderResponse;

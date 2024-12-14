@@ -1,4 +1,4 @@
-package com.sajal48.order.application.ports;
+package com.sajal48.order.application;
 
 import com.sajal48.order.application.dto.create.CreateOrderCommand;
 import com.sajal48.order.application.dto.create.CreateOrderResponse;
@@ -7,7 +7,6 @@ import com.sajal48.order.application.ports.output.publisher.payment.OrderCreated
 import com.sajal48.order.domain.event.OrderCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Slf4j
