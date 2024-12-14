@@ -22,39 +22,39 @@ public class OrderDomainServiceImpl implements OrderDomainService {
 		setOrderProductInformation(order, restaurant);
 		order.validateOrder();
 		order.initializeOrder();
-		log.info("Order with id: {} initiated", order.getId().getValue());
+		log.info("Order with restaurantId: {} initiated", order.getId().getValue());
 		return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
 	public OrderPaidEvent payOrder(Order order) {
 		order.pay();
-		log.info("Order with id: {} paid successfully", order.getId().getValue());
+		log.info("Order with restaurantId: {} paid successfully", order.getId().getValue());
 		return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
 	public void approveOrder(Order order) {
 		order.approve();
-		log.info("Order with id: {} is approved", order.getId().getValue());
+		log.info("Order with restaurantId: {} is approved", order.getId().getValue());
 	}
 
 	@Override
 	public OrderCancelledEvent cancelOrderPayment(Order order, List<String> failureMessages) {
 		order.initCancel(failureMessages);
-		log.info("Order payment is cancelling for order with id: {}", order.getId().getValue());
+		log.info("Order payment is cancelling for order with restaurantId: {}", order.getId().getValue());
 		return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
 	public void cancelOrder(Order order, List<String> failureMessages) {
 		order.cancel(failureMessages);
-		log.info("Order with id :{} is cancelled", order.getId().getValue());
+		log.info("Order with restaurantId :{} is cancelled", order.getId().getValue());
 	}
 
 	private void validateRestaurant(Restaurant restaurant) {
 		if(!restaurant.isActive()){
-			throw new DomainException("Restaurant with id: " + restaurant.getId().getValue() + " is currently not active");
+			throw new DomainException("Restaurant with restaurantId: " + restaurant.getId().getValue() + " is currently not active");
 		}
 	}
 
