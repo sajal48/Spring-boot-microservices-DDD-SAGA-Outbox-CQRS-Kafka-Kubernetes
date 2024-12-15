@@ -25,7 +25,7 @@
     <properties>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <mockito.version>5.14.2</mockito.version>
-        <spring-kafka.version>3.3.6</spring-kafka.version>
+        <spring-kafka.version>3.3.0</spring-kafka.version>
         <kafka-avro-serializer.version>7.7.1</kafka-avro-serializer.version>
         <avro.version>1.11.4</avro.version>
     </properties>
@@ -99,6 +99,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
         </dependency>
     </dependencies>
     <build>

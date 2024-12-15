@@ -1,6 +1,5 @@
 package com.sajal48.order.domain;
 
-import com.sajal48.common.domain.exception.DomainException;
 import com.sajal48.order.domain.entity.Order;
 import com.sajal48.order.domain.entity.Product;
 import com.sajal48.order.domain.entity.Restaurant;
