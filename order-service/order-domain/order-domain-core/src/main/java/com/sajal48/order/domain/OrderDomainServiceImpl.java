@@ -7,6 +7,7 @@ import com.sajal48.order.domain.entity.Restaurant;
 import com.sajal48.order.domain.event.OrderCancelledEvent;
 import com.sajal48.order.domain.event.OrderCreatedEvent;
 import com.sajal48.order.domain.event.OrderPaidEvent;
+import com.sajal48.order.domain.exception.OrderDomainException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZoneId;
@@ -54,7 +55,7 @@ public class OrderDomainServiceImpl implements OrderDomainService {
 
 	private void validateRestaurant(Restaurant restaurant) {
 		if(!restaurant.isActive()){
-			throw new DomainException("Restaurant with restaurantId: " + restaurant.getId().getValue() + " is currently not active");
+			throw new OrderDomainException("Restaurant with restaurantId: " + restaurant.getId().getValue() + " is currently not active");
 		}
 	}
 
